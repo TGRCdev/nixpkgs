@@ -457,17 +457,10 @@ in
         '';
       }
       {
-        assertion = cfg.captcha.enable -> cfg.captcha.type != "image" -> cfg.captcha.secretFile != null;
+        assertion = cfg.captcha.enable -> cfg.captcha.type != "image" -> (cfg.captcha.secretFile != null && cfg.captcha.siteKey != null);
         message = ''
           Using a CAPTCHA service that is not `image` requires providing a CAPTCHA secret through
-          the `captcha.secretFile` option.
-        '';
-      }
-      {
-        assertion = cfg.captcha.enable -> cfg.captcha.type != "image" -> cfg.captcha.siteKey != null;
-        message = ''
-          Using a CAPTCHA service that is not `image` requires providing a CAPTCHA site key through
-          the `captcha.siteKey` option.
+          the `captcha.secretFile` option and a CAPTCHA site key through the `captcha.siteKey` option.
         '';
       }
       {
