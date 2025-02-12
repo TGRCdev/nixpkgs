@@ -466,20 +466,19 @@ in
       {
         assertion = cfg.captcha.url != null -> (builtins.elem cfg.captcha.type ["mcaptcha" "recaptcha"]);
         message = ''
-          `captcha.url` is only relevant when `CAPTCHA_TYPE` is `mcaptcha` or `recaptcha`.
+          `captcha.url` is only relevant when `captcha.type` is `mcaptcha` or `recaptcha`.
         '';
       }
     ];
 
     services.gitea.settings = let
-      prefixTable = {
+      captchaPrefix = optionalString cfg.captcha.enable ({
         image = "IMAGE";
         recaptcha = "RECAPTCHA";
         hcaptcha = "HCAPTCHA";
         mcaptcha = "MCAPTCHA";
         cfturnstile = "CF_TURNSTILE";
-      };
-      captchaPrefix = optionalString cfg.captcha.enable (prefixTable."${cfg.captcha.type}");
+      }."${cfg.captcha.type}");
     in {
       "cron.update_checker".ENABLED = lib.mkDefault false;
 
